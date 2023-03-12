@@ -195,6 +195,13 @@ chmod -R 777 vendor
 ./hack/update-codegen.sh
 ```
 
+- 复制生成的文件到 pkg 下
+
+```sh
+mv ../github.com/Anddd7/ vendor/github.com/
+mv vendor/github.com/Anddd7/playground-k8s-crd/pkg/ .
+```
+
 ### 推荐阅读
 
 - [Kubernetes CRD 详解（Custom Resource Definition）](https://mp.weixin.qq.com/s?__biz=MzIzNzU5NTYzMA==&mid=2247512881&idx=1&sn=e5595b6d101432112d498ffd7cbe5901&chksm=e8c4cdb0dfb344a620aa10bcc283212a00e075e0b3db60e43cf87f03f9832b8d1d6733a8b16f&scene=178&cur_album_id=1990567114293739521#rd)
