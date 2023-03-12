@@ -1,0 +1,32 @@
+apiVersion: "k8scrdtutorial.github.com/v1alpha1"
+kind: Seller
+metadata:
+  name: seller-apple
+  namespace: default
+spec:
+  name: apple
+  amount: 10
+  price: 100
+  money: 0
+---
+apiVersion: "k8scrdtutorial.github.com/v1alpha1"
+kind: Seller
+metadata:
+  name: seller-banana
+  namespace: default
+spec:
+  name: banana
+  amount: 15
+  price: 120
+  money: 0
+---
+apiVersion: "k8scrdtutorial.github.com/v1alpha1"
+kind: Seller
+metadata:
+  name: seller-peach
+  namespace: default
+spec:
+  name: peach
+  amount: 10
+  price: 100
+  money: 0
