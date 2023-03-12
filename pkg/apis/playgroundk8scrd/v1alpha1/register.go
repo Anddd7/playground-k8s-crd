@@ -1,7 +1,7 @@
 package v1alpha1
 
 import (
-	"github.com/Anddd7/playground-k8s-crd/pkg/apis/playground_k8s_crd"
+	playgroundk8scrd "github.com/Anddd7/playground-k8s-crd/pkg/apis/playgroundk8scrd"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -9,8 +9,8 @@ import (
 )
 
 var SchemeGroupVersion = schema.GroupVersion{
-	Group:   playground_k8s_crd.GroupName,
-	Version: playground_k8s_crd.Version,
+	Group:   playgroundk8scrd.GroupName,
+	Version: playgroundk8scrd.Version,
 }
 
 func Kind(kind string) schema.GroupKind {

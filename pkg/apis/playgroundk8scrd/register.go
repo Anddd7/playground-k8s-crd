@@ -1,4 +1,4 @@
-package playground_k8s_crd
+package playgroundk8scrd
 
 const (
 	// same as the group name of the crd 'spec.group'

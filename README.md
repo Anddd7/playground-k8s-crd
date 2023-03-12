@@ -126,17 +126,17 @@ k get sellers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}{"\n"
 go mod init github.com/Anddd7/playground-k8s-crd
 ```
 
-- 创建 pkg/apis/playground_k8s_crd/register.go
+- 创建 pkg/apis/playgroundk8scrd/register.go
 
 声明能够被 client-go 识别的参数和变量（如果用其它的语言 sdk，也需要 follow 相应的规则）
 
 ```sh
-mkdir -p pkg/apis/playground_k8s_crd
-touch pkg/apis/playground_k8s_crd/register.go
+mkdir -p pkg/apis/playgroundk8scrd
+touch pkg/apis/playgroundk8scrd/register.go
 ```
 
 ```go
-package playground_k8s_crd
+package playgroundk8scrd
 
 const (
  // same as the group name of the crd 'spec.group'
@@ -146,13 +146,49 @@ const (
 ```
 
 - 创建 skeleton 代码
-  - pkg/apis/playground_k8s_crd/v1alpha1/doc.go
-  - pkg/apis/playground_k8s_crd/v1alpha1/types.go
-  - pkg/apis/playground_k8s_crd/v1alpha1/register.go
+  - pkg/apis/playgroundk8scrd/v1alpha1/doc.go
+  - pkg/apis/playgroundk8scrd/v1alpha1/types.go
+  - pkg/apis/playgroundk8scrd/v1alpha1/register.go
 
 参照 kubernetes/sample-controller 定义 CRD 资源在 Go 代码中的结构体
 
-### Step 3 - 编写处理逻辑
+
+- 目录结构
+
+```sh
+$ tree                                         
+.
+├── LICENSE
+├── README.md
+├── artifacts
+│   ├── buyers.yaml
+│   ├── crd-buyer.yaml
+│   ├── crd-seller.yaml
+│   └── sellers.yaml
+├── go.mod
+├── go.sum
+└── pkg
+    └── apis
+        └── playgroundk8scrd
+            ├── register.go
+            └── v1alpha1
+                ├── doc.go
+                ├── register.go
+                └── types.go
+```
+
+### Step 3 - 编写 Controller
+
+- 准备 code generato，从 sample-controller 里复制 hack 文件夹
+
+- 修改 hack/update-codegen.sh (项目名和包名)，并执行
+
+```sh
+# ... resolve compile issue
+go mod vendor
+chmod -R 777 vendor
+./hack/update-codegen.sh
+```
 
 ### 推荐阅读
 
