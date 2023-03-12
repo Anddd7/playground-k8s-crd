@@ -242,6 +242,10 @@ operator-sdk create api --group transaction --version v1alpha1 --kind Buyer --re
 
 ### Step 2 - 修改资源定义
 
+- 修改 api/v1alpha1/buyer_types.go 和 api/v1alpha1/seller_types.go，添加必要的参数
+- make generate，自动生成新的 deep copy 方法
+- make manifest，自动生成新的 manifest 文件
+
 ### Step 3
 
 ### 推荐阅读

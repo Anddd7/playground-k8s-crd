@@ -1,0 +1,59 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - transaction.mesh-shaped.top
+  resources:
+  - buyers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - transaction.mesh-shaped.top
+  resources:
+  - buyers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - transaction.mesh-shaped.top
+  resources:
+  - buyers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - transaction.mesh-shaped.top
+  resources:
+  - sellers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - transaction.mesh-shaped.top
+  resources:
+  - sellers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - transaction.mesh-shaped.top
+  resources:
+  - sellers/status
+  verbs:
+  - get
+  - patch
+  - update

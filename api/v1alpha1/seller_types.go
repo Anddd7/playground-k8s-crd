@@ -28,8 +28,10 @@ type SellerSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of Seller. Edit seller_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Name   string `json:"name"`
+	Amount *int32 `json:"amount"`
+	Price  string `json:"price"`
+	Money  string `json:"money"`
 }
 
 // SellerStatus defines the observed state of Seller
