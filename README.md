@@ -13,6 +13,8 @@ e.g. 卖苹果的以 100 元每个的价格售卖 10 个苹果，如果有买家
 
 - 声明 CRD 资源
 
+相当于注册一个 API 接口，让 K8S API Server 识别并处理请求
+
 ```yaml
 # artifacts/crd-seller.yaml
 apiVersion: apiextensions.k8s.io/v1
@@ -67,6 +69,8 @@ spec:
 
 - 声明 Seller 和 Buyer 资源
 
+通过 Yaml 创建“资源”，就像创建 Pod、Deployment 一样
+
 ```yaml
 # artifacts/sellers.yaml
 apiVersion: "k8scrdtutorial.github.com/v1alpha1"
@@ -91,26 +95,30 @@ spec:
 
 - 测试和验证
 
+Apply 所有的资源到集群里
+
 ```sh
+# apply crd
 k apply -f artifacts/crd-seller.yaml -f artifacts/crd-buyer.yaml
 
 k get crd sellers.k8scrdtutorial.github.com
 k get crd buyers.k8scrdtutorial.github.com
 
+# apply resource
 k apply -f artifacts/buyers.yaml -f artifacts/sellers.yaml
 
 k get sellers
 k get buyers
 ```
 
+```sh
+k get buyers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}{"\n"}{end}'
+k get sellers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}{"\n"}{end}'
+```
+
 ### Step 2 - 创建 Controller
 
-
-
-
 ### Step 3 - 编写处理逻辑
-
-
 
 ### 推荐阅读
 
