@@ -11,7 +11,7 @@ e.g. 卖苹果的以 100 元每个的价格售卖 10 个苹果，如果有买家
 
 ### Step 1 - 创建 CRD 资源
 
-- 声明 CRD 资源
+#### 声明 CRD 资源
 
 相当于注册一个 API 接口，让 K8S API Server 识别并处理请求
 
@@ -67,7 +67,7 @@ spec:
       - buyer
 ```
 
-- 声明 Seller 和 Buyer 资源
+#### 声明 Seller 和 Buyer 资源
 
 通过 Yaml 创建“资源”，就像创建 Pod、Deployment 一样
 
@@ -93,7 +93,7 @@ spec:
   price: 100
 ```
 
-- 测试和验证
+#### 测试和验证
 
 Apply 所有的资源到集群里
 
@@ -126,13 +126,13 @@ k get sellers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}{"\n"
 - short: playgroundk8scrd
 - version: v1alpha1
 
-- 初始化项目
+#### 初始化项目
 
 ```sh
 go mod init github.com/Anddd7/playground-k8s-crd
 ```
 
-- 创建 pkg/apis/playgroundk8scrd/register.go
+#### 创建 pkg/apis/playgroundk8scrd/register.go
 
 声明能够被 client-go 识别的参数和变量（如果用其它的语言 sdk，也需要 follow 相应的规则）
 
@@ -151,14 +151,15 @@ const (
 )
 ```
 
-- 创建 skeleton 代码
-  - pkg/apis/playgroundk8scrd/v1alpha1/doc.go
-  - pkg/apis/playgroundk8scrd/v1alpha1/types.go
-  - pkg/apis/playgroundk8scrd/v1alpha1/register.go
+#### 创建 skeleton 代码
+
+- pkg/apis/playgroundk8scrd/v1alpha1/doc.go
+- pkg/apis/playgroundk8scrd/v1alpha1/types.go
+- pkg/apis/playgroundk8scrd/v1alpha1/register.go
 
 参照 kubernetes/sample-controller 定义 CRD 资源在 Go 代码中的结构体
 
-- 目录结构
+#### 目录结构
 
 ```sh
 $ tree                                         
@@ -184,9 +185,9 @@ $ tree
 
 ### Step 3 - 编写 Controller
 
-- 准备 code generato，从 sample-controller 里复制 hack 文件夹
+#### 准备 code generato，从 sample-controller 里复制 hack 文件夹
 
-- 修改 hack/update-codegen.sh (项目名和包名)，并执行
+#### 修改 hack/update-codegen.sh (项目名和包名)，并执行
 
 ```sh
 # ... resolve compile issue
@@ -195,18 +196,18 @@ chmod -R 777 vendor
 ./hack/update-codegen.sh
 ```
 
-- 复制生成的文件到 pkg 下
+#### 复制生成的文件到 pkg 下
 
 ```sh
 mv ../github.com/Anddd7/ vendor/github.com/
 mv vendor/github.com/Anddd7/playground-k8s-crd/pkg/ .
 ```
 
-- 编写 main.go 和 controller.go
+#### 编写 main.go 和 controller.go
 
 重点是修改 contorller.go#syncHandler 方法，当监听到资源的改变时，进行响应
 
-- 运行和验证
+#### 运行和验证
 
 ```sh
 go run .
@@ -215,7 +216,21 @@ go run .
 k get sellers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}:{@.spec.amount}:{@.spec.money}{"\n"}{end}'
 k get buyers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}:{@.spec.amount}{"\n"}{end}'
 ```
+
+#### （后续）放到集群中运行
+
+- Docker build
+- Add service account
+- Add deployment manifest
+- ...
+- Apply into k8s cluster
+
 ## Operator
+
+虽然 k8s 提供了非常多工具，让你可以基于 client-go 实现自己的 controller，但整个过程还是非常繁琐。属于灵活性高但效率低的方式。
+
+而 Operator 则是将上述流程进行了包装和自动化，以便更好的使用 client-go、code generator 等工具。并且还额外定义了 ‘启动、停止、更新’ 等操作流来保护被 operator 的应用能够安全的运行。
+
 
 ### Step 1
 
@@ -223,8 +238,8 @@ k get buyers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}:{@.sp
 
 ### Step 3
 
-
 ### 推荐阅读
 
 - [Kubernetes CRD 详解（Custom Resource Definition）](https://mp.weixin.qq.com/s?__biz=MzIzNzU5NTYzMA==&mid=2247512881&idx=1&sn=e5595b6d101432112d498ffd7cbe5901&chksm=e8c4cdb0dfb344a620aa10bcc283212a00e075e0b3db60e43cf87f03f9832b8d1d6733a8b16f&scene=178&cur_album_id=1990567114293739521#rd)
 - <https://github.com/kubernetes/sample-controller>
+- <https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/>
