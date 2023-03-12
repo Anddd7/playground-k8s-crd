@@ -202,11 +202,19 @@ mv ../github.com/Anddd7/ vendor/github.com/
 mv vendor/github.com/Anddd7/playground-k8s-crd/pkg/ .
 ```
 
-### 推荐阅读
+- 编写 main.go 和 controller.go
 
-- [Kubernetes CRD 详解（Custom Resource Definition）](https://mp.weixin.qq.com/s?__biz=MzIzNzU5NTYzMA==&mid=2247512881&idx=1&sn=e5595b6d101432112d498ffd7cbe5901&chksm=e8c4cdb0dfb344a620aa10bcc283212a00e075e0b3db60e43cf87f03f9832b8d1d6733a8b16f&scene=178&cur_album_id=1990567114293739521#rd)
-- <https://github.com/kubernetes/sample-controller>
+重点是修改 contorller.go#syncHandler 方法，当监听到资源的改变时，进行响应
 
+- 运行和验证
+
+```sh
+go run .
+
+# all products has been selled, and money increased 
+k get sellers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}:{@.spec.amount}:{@.spec.money}{"\n"}{end}'
+k get buyers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}:{@.spec.amount}{"\n"}{end}'
+```
 ## Operator
 
 ### Step 1
@@ -214,3 +222,9 @@ mv vendor/github.com/Anddd7/playground-k8s-crd/pkg/ .
 ### Step 2
 
 ### Step 3
+
+
+### 推荐阅读
+
+- [Kubernetes CRD 详解（Custom Resource Definition）](https://mp.weixin.qq.com/s?__biz=MzIzNzU5NTYzMA==&mid=2247512881&idx=1&sn=e5595b6d101432112d498ffd7cbe5901&chksm=e8c4cdb0dfb344a620aa10bcc283212a00e075e0b3db60e43cf87f03f9832b8d1d6733a8b16f&scene=178&cur_album_id=1990567114293739521#rd)
+- <https://github.com/kubernetes/sample-controller>
