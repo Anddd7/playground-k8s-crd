@@ -118,7 +118,13 @@ k get sellers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}{"\n"
 
 ### Step 2 - 创建 Controller
 
-> 为了便于项目的管理，需要尽量保持 项目、module、api group 等名称保持一定的统一
+> 为了便于项目的管理，需要尽量保持 项目、module、api group 等名称保持一定的统一 \
+> 特别是 code generator 可能会因为名称不统一而不工作
+
+- 项目名：github.com/Anddd7/playground-k8s-crd
+- group: playgroundk8scrd.anddd7.github.com
+- short: playgroundk8scrd
+- version: v1alpha1
 
 - 初始化项目
 
@@ -151,7 +157,6 @@ const (
   - pkg/apis/playgroundk8scrd/v1alpha1/register.go
 
 参照 kubernetes/sample-controller 定义 CRD 资源在 Go 代码中的结构体
-
 
 - 目录结构
 
