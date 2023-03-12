@@ -139,10 +139,18 @@ touch pkg/apis/playground_k8s_crd/register.go
 package playground_k8s_crd
 
 const (
+ // same as the group name of the crd 'spec.group'
  GroupName = "playgroundk8scrd.anddd7.github.com"
  Version   = "v1alpha1"
 )
 ```
+
+- 创建 skeleton 代码
+  - pkg/apis/playground_k8s_crd/v1alpha1/doc.go
+  - pkg/apis/playground_k8s_crd/v1alpha1/types.go
+  - pkg/apis/playground_k8s_crd/v1alpha1/register.go
+
+参照 kubernetes/sample-controller 定义 CRD 资源在 Go 代码中的结构体
 
 ### Step 3 - 编写处理逻辑
 
