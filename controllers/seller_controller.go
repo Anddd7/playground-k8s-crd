@@ -18,6 +18,11 @@ package controllers
 
 import (
 	"context"
+	"fmt"
+	"math"
+	"strconv"
+
+	"k8s.io/apimachinery/pkg/api/errors"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -47,11 +52,83 @@ type SellerReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
 func (r *SellerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	log := log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	seller := &transactionv1alpha1.Seller{}
+	err := r.Get(ctx, req.NamespacedName, seller)
+	if err != nil {
+		if errors.IsNotFound(err) {
+			return ctrl.Result{}, nil
+		}
+		return ctrl.Result{}, err
+	}
+
+	buyers, err := r.findBuyers(ctx, seller)
+	if err != nil {
+		log.Info(err.Error())
+		return ctrl.Result{}, nil
+	}
+	log.Info(
+		fmt.Sprintf("Found %d buyers, start to sell %s to them", len(buyers), seller.Spec.Name),
+	)
+
+	amount := *seller.Spec.Amount
+	money, _ := strconv.ParseFloat(seller.Spec.Money, 32)
+	for _, buyer := range buyers {
+		if amount == 0 {
+			break
+		}
+		settleAmount := int32(math.Min(float64(*buyer.Spec.Amount), float64(amount)))
+
+		// buyer
+		restAmount := *buyer.Spec.Amount - settleAmount
+		price, _ := strconv.ParseFloat(buyer.Spec.Price, 32)
+
+		// seller
+		money += float64(settleAmount) * price
+		amount -= settleAmount
+
+		// update
+		buyer.Spec.Amount = &restAmount
+		_ = r.Update(ctx, buyer)
+	}
+
+	// update
+	seller.Spec.Amount = &amount
+	seller.Spec.Money = strconv.FormatFloat(money, 'f', -1, 32)
+	_ = r.Update(ctx, seller)
+
+	log.Info(
+		fmt.Sprintf("Finished sell transaction, rest amount is %d, earned money is %f", amount, money),
+	)
 
 	return ctrl.Result{}, nil
+}
+
+func (r *SellerReconciler) findBuyers(ctx context.Context, seller *transactionv1alpha1.Seller) ([]*transactionv1alpha1.Buyer, error) {
+	log := log.FromContext(ctx)
+	var buyers transactionv1alpha1.BuyerList
+	listOpts := []client.ListOption{
+		client.InNamespace(seller.Namespace),
+		//client.MatchingFields{"spec.name": seller.Spec.Name},
+	}
+	_ = r.List(ctx, &buyers, listOpts...)
+
+	log.Info(
+		fmt.Sprintf("Find %d buyers who want to buy %s", len(buyers.Items), seller.Spec.Name),
+	)
+	var ans []*transactionv1alpha1.Buyer
+	for _, buyer := range buyers.Items {
+		if *buyer.Spec.Amount > 0 &&
+			seller.Spec.Name == buyer.Spec.Name &&
+			seller.Spec.Price <= buyer.Spec.Price {
+			ans = append(ans, &buyer)
+		}
+	}
+	if len(ans) == 0 {
+		return ans, fmt.Errorf("no suitable buyer of %s exists", seller.Spec.Name)
+	}
+	return ans, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

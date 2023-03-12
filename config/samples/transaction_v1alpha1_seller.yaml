@@ -9,4 +9,7 @@ metadata:
     app.kubernetes.io/created-by: playground-k8s-crd
   name: seller-sample
 spec:
-  # TODO(user): Add fields here
+  name: "sample"
+  price: "100.00"
+  amount: 10
+  money: "0.00"

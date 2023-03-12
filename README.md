@@ -246,7 +246,26 @@ operator-sdk create api --group transaction --version v1alpha1 --kind Buyer --re
 - make generate，自动生成新的 deep copy 方法
 - make manifest，自动生成新的 manifest 文件
 
-### Step 3
+### Step 3 - 修改 controller
+
+#### 实现 Reconcile 方法
+修改 controllers/buyer_controller.go 和 controllers/seller_controller.go
+ 
+  
+#### 为 controller 添加必要的权限 (RBAC)
+
+通过注解定义对应 SA 的权限，然后用 make manifest 就可以刷新 manifest 文件
+
+```go
+//+kubebuilder:rbac:groups=transaction.mesh-shaped.top,resources=sellers,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=transaction.mesh-shaped.top,resources=sellers/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=transaction.mesh-shaped.top,resources=sellers/finalizers,verbs=update
+//+kubebuilder:rbac:groups=core,resources=events,verbs=create;patch
+```
+
+```sh
+make manifest
+```
 
 ### 推荐阅读
 
