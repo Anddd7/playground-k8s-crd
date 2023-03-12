@@ -1,0 +1,12 @@
+apiVersion: transaction.mesh-shaped.top/v1alpha1
+kind: Seller
+metadata:
+  labels:
+    app.kubernetes.io/name: seller
+    app.kubernetes.io/instance: seller-sample
+    app.kubernetes.io/part-of: playground-k8s-crd
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: playground-k8s-crd
+  name: seller-sample
+spec:
+  # TODO(user): Add fields here

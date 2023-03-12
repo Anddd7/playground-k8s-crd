@@ -1,0 +1,28 @@
+domain: mesh-shaped.top
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: playground-k8s-crd
+repo: github.com/Anddd7/playground-k8s-crd
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: mesh-shaped.top
+  group: transaction
+  kind: Buyer
+  path: github.com/Anddd7/playground-k8s-crd/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: mesh-shaped.top
+  group: transaction
+  kind: Seller
+  path: github.com/Anddd7/playground-k8s-crd/api/v1alpha1
+  version: v1alpha1
+version: "3"

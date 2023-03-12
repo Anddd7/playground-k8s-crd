@@ -232,9 +232,15 @@ k get buyers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}:{@.sp
 而 Operator 则是将上述流程进行了包装和自动化，以便更好的使用 client-go、code generator 等工具。并且还额外定义了 ‘启动、停止、更新’ 等操作流来保护被 operator 的应用能够安全的运行。
 
 
-### Step 1
+### Step 1 - 初始化项目和 API
 
-### Step 2
+```sh
+operator-sdk init --domain mesh-shaped.top --repo github.com/Anddd7/playground-k8s-crd
+operator-sdk create api --group transaction --version v1alpha1 --kind Seller --resource --controller
+operator-sdk create api --group transaction --version v1alpha1 --kind Buyer --resource --controller
+```
+
+### Step 2 - 修改资源定义
 
 ### Step 3
 
