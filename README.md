@@ -231,7 +231,6 @@ k get buyers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}:{@.sp
 
 而 Operator 则是将上述流程进行了包装和自动化，以便更好的使用 client-go、code generator 等工具。并且还额外定义了 ‘启动、停止、更新’ 等操作流来保护被 operator 的应用能够安全的运行。
 
-
 ### Step 1 - 初始化项目和 API
 
 ```sh
@@ -249,9 +248,9 @@ operator-sdk create api --group transaction --version v1alpha1 --kind Buyer --re
 ### Step 3 - 修改 controller
 
 #### 实现 Reconcile 方法
+
 修改 controllers/buyer_controller.go 和 controllers/seller_controller.go
- 
-  
+
 #### 为 controller 添加必要的权限 (RBAC)
 
 通过注解定义对应 SA 的权限，然后用 make manifest 就可以刷新 manifest 文件
@@ -266,6 +265,28 @@ operator-sdk create api --group transaction --version v1alpha1 --kind Buyer --re
 ```sh
 make manifest
 ```
+
+#### 编写 controller 测试
+
+<https://sdk.operatorframework.io/docs/building-operators/golang/testing/>
+
+```sh
+make test
+```
+
+#### 运行（本地和集群）
+
+```sh
+# build image and deploy into cluster
+make deploy IMG="mesh-shaped.top/playground-k8s-crd:v0.0.1"
+
+# run locally
+make install run
+```
+
+### 总结
+
+从需要执行的操作可以看出，operator 框架大大减少了操作步骤和涉及的工具，几乎只需要 operator-sdk 和 make 命令就可以完成 operator 的开发部署全流程。
 
 ### 推荐阅读
 
