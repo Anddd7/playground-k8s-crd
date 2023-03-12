@@ -1,9 +1,9 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: sellers.k8scrdtutorial.github.com
+  name: sellers.playgroundk8scrd.anddd7.github.com
 spec:
-  group: k8scrdtutorial.github.com
+  group: playgroundk8scrd.anddd7.github.com
   versions:
     - name: v1alpha1
       served: true

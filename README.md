@@ -20,9 +20,9 @@ e.g. 卖苹果的以 100 元每个的价格售卖 10 个苹果，如果有买家
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: sellers.k8scrdtutorial.github.com
+  name: sellers.playgroundk8scrd.anddd7.github.com
 spec:
-  group: k8scrdtutorial.github.com
+  group: playgroundk8scrd.anddd7.github.com
   versions:
     - name: v1alpha1
       served: true
@@ -73,7 +73,7 @@ spec:
 
 ```yaml
 # artifacts/sellers.yaml
-apiVersion: "k8scrdtutorial.github.com/v1alpha1"
+apiVersion: "playgroundk8scrd.anddd7.github.com/v1alpha1"
 kind: Seller
 metadata:
   name: seller-apple
@@ -83,7 +83,7 @@ spec:
   price: 100
   money: 0
 # artifacts/buyers.yaml
-apiVersion: "k8scrdtutorial.github.com/v1alpha1"
+apiVersion: "playgroundk8scrd.anddd7.github.com/v1alpha1"
 kind: Buyer
 metadata:
   name: buyer-apple
@@ -101,8 +101,8 @@ Apply 所有的资源到集群里
 # apply crd
 k apply -f artifacts/crd-seller.yaml -f artifacts/crd-buyer.yaml
 
-k get crd sellers.k8scrdtutorial.github.com
-k get crd buyers.k8scrdtutorial.github.com
+k get crd sellers.playgroundk8scrd.anddd7.github.com
+k get crd buyers.playgroundk8scrd.anddd7.github.com
 
 # apply resource
 k apply -f artifacts/buyers.yaml -f artifacts/sellers.yaml
@@ -117,6 +117,32 @@ k get sellers -o jsonpath='{range .items[*]}{@.metadata.name}:{@.spec.name}{"\n"
 ```
 
 ### Step 2 - 创建 Controller
+
+> 为了便于项目的管理，需要尽量保持 项目、module、api group 等名称保持一定的统一
+
+- 初始化项目
+
+```sh
+go mod init github.com/Anddd7/playground-k8s-crd
+```
+
+- 创建 pkg/apis/playground_k8s_crd/register.go
+
+声明能够被 client-go 识别的参数和变量（如果用其它的语言 sdk，也需要 follow 相应的规则）
+
+```sh
+mkdir -p pkg/apis/playground_k8s_crd
+touch pkg/apis/playground_k8s_crd/register.go
+```
+
+```go
+package playground_k8s_crd
+
+const (
+ GroupName = "playgroundk8scrd.anddd7.github.com"
+ Version   = "v1alpha1"
+)
+```
 
 ### Step 3 - 编写处理逻辑
 

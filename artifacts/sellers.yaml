@@ -1,4 +1,4 @@
-apiVersion: "k8scrdtutorial.github.com/v1alpha1"
+apiVersion: "playgroundk8scrd.anddd7.github.com/v1alpha1"
 kind: Seller
 metadata:
   name: seller-apple
@@ -9,7 +9,7 @@ spec:
   price: 100
   money: 0
 ---
-apiVersion: "k8scrdtutorial.github.com/v1alpha1"
+apiVersion: "playgroundk8scrd.anddd7.github.com/v1alpha1"
 kind: Seller
 metadata:
   name: seller-banana
@@ -20,7 +20,7 @@ spec:
   price: 120
   money: 0
 ---
-apiVersion: "k8scrdtutorial.github.com/v1alpha1"
+apiVersion: "playgroundk8scrd.anddd7.github.com/v1alpha1"
 kind: Seller
 metadata:
   name: seller-peach
